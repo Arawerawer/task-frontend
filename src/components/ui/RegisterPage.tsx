@@ -18,6 +18,7 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       await AuthService.register(username, email, password);
+      // console.log("註冊成功", data);
       toast.success("註冊成功！即將前往登入頁面");
       navigate("/login");
     } catch (err: any) {

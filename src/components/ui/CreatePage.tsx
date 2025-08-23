@@ -33,6 +33,7 @@ import {
 import TaskService from "@/services/task.service";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Textarea } from "@/components/ui/textarea";
 
 //Resux
 import { useSelector } from "react-redux";
@@ -53,6 +54,7 @@ export default function CreatePage() {
     e.preventDefault();
     try {
       await TaskService.post(title, description, status, dueDate);
+      // console.log("事項創建成功", data);
       toast.success("事項創建成功");
       navigate("/task");
     } catch (err: any) {
@@ -87,7 +89,8 @@ export default function CreatePage() {
                   onChange={(e) => setTitle(e.target.value)}
                 />
                 <Label htmlFor="description">敘述</Label>
-                <Input
+                <Textarea
+                  className="whitespace-normal break-words break-all"
                   id="description"
                   placeholder="請描述您的事項內容"
                   onChange={(e) => setDescription(e.target.value)}

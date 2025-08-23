@@ -19,10 +19,10 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await AuthService.login(email, password);
-      //console.log(response);
+      const data = await AuthService.login(email, password);
+      //console.log(data);
 
-      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("user", JSON.stringify(data));
       dispatch(setCurrentUser(AuthService.getCurrentUser()));
       toast.success("登入成功！即將前往事項頁面", { duration: 3000 });
       navigate("/task");

@@ -27,17 +27,21 @@ export default function TaskPage() {
   const currentUser = useSelector((state: any) => state.user.currentUser);
   const [taskData, setTaskData] = useState<Task[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
       if (!currentUser) return;
+      setLoading(true);
       const _id = currentUser.user._id;
       try {
-        const res = await TaskService.getByUser(_id);
-        console.log("✅ API 有回應：", res);
-        setTaskData(res.data.taskFound);
+        const data = await TaskService.getByUser(_id);
+        // console.log(" API 有回應：", data);
+        setTaskData(data.taskFound);
       } catch (err) {
         console.error("❌ API 失敗：", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTasks();
@@ -65,6 +69,14 @@ export default function TaskPage() {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <p className="text-lg">載入中...</p>
+      </div>
+    );
+  }
+
   if (taskData.length === 0) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center">
@@ -82,12 +94,12 @@ export default function TaskPage() {
             key={task._id}
           >
             <CardHeader>
-              <CardTitle className="text-gray-900 font-semibold text-4xl whitespace-normal break-words break-all">
+              <CardTitle className="text-gray-900 font-semibold text-4xl  break-all">
                 {task.title}
               </CardTitle>
             </CardHeader>
 
-            <CardContent className="text-gray-600 whitespace-normal break-words break-all">
+            <CardContent className="text-gray-600 whitespace-pre-line break-words">
               {task.description}
             </CardContent>
 
