@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 //redux
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import type { RootState } from "@/store/store";
 import { setCurrentUser } from "@/store/userSlice";
 //api
 import AuthService from "@/services/auth.service";
@@ -13,7 +14,7 @@ import toast from "react-hot-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state: any) => state.user.currentUser);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   const handleLogout = () => {
     AuthService.logout();

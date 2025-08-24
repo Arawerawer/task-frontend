@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 //Resux
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import type { RootState } from "@/store/store";
 import TaskService from "@/services/task.service";
 import toast from "react-hot-toast";
 
@@ -24,7 +25,7 @@ interface Task {
 }
 
 export default function TaskPage() {
-  const currentUser = useSelector((state: any) => state.user.currentUser);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const [taskData, setTaskData] = useState<Task[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -33,13 +34,13 @@ export default function TaskPage() {
     const fetchTasks = async () => {
       if (!currentUser) return;
       setLoading(true);
-      const _id = currentUser.user._id;
+
       try {
-        const data = await TaskService.getByUser(_id);
+        const data = await TaskService.getTask();
         // console.log(" API 有回應：", data);
         setTaskData(data.taskFound);
       } catch (err) {
-        console.error("❌ API 失敗：", err);
+        console.error(" API 失敗：", err);
       } finally {
         setLoading(false);
       }
@@ -47,11 +48,11 @@ export default function TaskPage() {
     fetchTasks();
   }, [currentUser]);
 
-  const handleDelete = async (_id: string) => {
+  const handleDelete = async (taskId: string) => {
     try {
-      setDeletingId(_id);
-      await TaskService.delete(_id);
-      setTaskData((prev) => prev.filter((task) => task._id !== _id));
+      setDeletingId(taskId);
+      await TaskService.delete(taskId);
+      setTaskData((prev) => prev.filter((task) => task._id !== taskId));
       toast.success("刪除成功");
     } catch (err: any) {
       toast.error(err.response?.data?.message || "刪除失敗，請稍後再試");

@@ -50,12 +50,30 @@ class TaskService {
   }
 
   //querry task
-  async getByUser(_id: string) {
+  // async getByUser(_id: string) {
+  //   try {
+  //     const user = localStorage.getItem("user");
+  //     const token = user ? JSON.parse(user).token : "";
+
+  //     const res = await axios.get(`${API_URL}/${_id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     return res.data;
+  //   } catch (err) {
+  //     console.error("get API Error:", err);
+  //     throw err;
+  //   }
+  // }
+
+  async getTask() {
     try {
       const user = localStorage.getItem("user");
       const token = user ? JSON.parse(user).token : "";
 
-      const res = await axios.get(`${API_URL}/${_id}`, {
+      const res = await axios.get(API_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,7 +81,7 @@ class TaskService {
 
       return res.data;
     } catch (err) {
-      console.error("get API Error:", err);
+      console.error("getTask API Error:", err);
       throw err;
     }
   }
