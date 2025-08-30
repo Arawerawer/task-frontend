@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import type { RootState } from "@/store/store";
 import TaskService from "@/services/task.service";
 import toast from "react-hot-toast";
+import EditDialog from "./EditDialog";
 
 interface Task {
   _id: string;
@@ -120,10 +121,12 @@ export default function TaskPage() {
               截止日期 : {task.dueDate}
             </CardContent>
 
-            <CardFooter className="flex justify-end">
+            <CardFooter className="flex justify-between">
+              <EditDialog task={task} />
               <Button
                 onClick={() => handleDelete(task._id)}
                 disabled={deletingId === task._id}
+                variant="destructive"
               >
                 {deletingId === task._id ? "刪除中..." : "完成/刪除"}
               </Button>

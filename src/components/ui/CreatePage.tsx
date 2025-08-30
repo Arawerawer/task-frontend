@@ -42,6 +42,8 @@ export default function CreatePage() {
   const currentUser = useSelector((state: any) => state.user.currentUser);
   const navigate = useNavigate();
 
+  const [submitting, setSubmitting] = useState(false);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
@@ -52,6 +54,8 @@ export default function CreatePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return; //  防止重複送出
+    setSubmitting(true);
     try {
       await TaskService.post(title, description, status, dueDate);
       // console.log("事項創建成功", data);
@@ -60,6 +64,8 @@ export default function CreatePage() {
     } catch (err: any) {
       toast.error(err.response?.data?.message || "創建失敗，請稍後再試");
       console.error("登入失敗:", err);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -153,9 +159,9 @@ export default function CreatePage() {
             type="submit"
             form="myForm"
             className="w-full"
-            disabled={!title || !status || !date}
+            disabled={submitting || !title || !status || !date}
           >
-            創建事項
+            {submitting ? "建立中..." : "創建事項"}
           </Button>
         </CardFooter>
       </Card>
