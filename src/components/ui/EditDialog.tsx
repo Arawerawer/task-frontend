@@ -3,7 +3,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -29,7 +28,7 @@ import {
 
 import { zhTW } from "date-fns/locale";
 import { format } from "date-fns";
-import { ChevronDownIcon, Sprout } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 
 import { useState } from "react";
 import toast from "react-hot-toast";
