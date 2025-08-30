@@ -67,12 +67,12 @@ export default function EditDialog({ task }: EditDialogProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (submitting) return; //  防止重複送出
     setSubmitting(true);
     try {
       const newTask = await TaskService.editTask(task._id, formData);
       console.log("task edited:", newTask);
-      toast.success("事項更新成功");
 
       window.location.reload();
     } catch (err: any) {
